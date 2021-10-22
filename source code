@@ -1,0 +1,84 @@
+
+#include "CTBot.h"
+CTBot myBot;
+
+int sensorPin = A0;
+int relayPin1 = D1;
+int relayPin2 = D2;
+int sensorValue;
+int limit = 420;
+
+  String ssid  = "dopnetindo.net";                                   // Sesuaikan Dengan SSID
+  String pass  = "B3ngkulu2021";                                    // Ganti Password Sesuai Wifi
+  String token = "1337508958:AAGCSu0W7xDZLXDTh1RAZqmzQwJUvW3Hqj0";  // Isi Sesuai Token BOT
+
+  // Untuk Setting Perintah Pada Telegram
+     const char* Perintah_On_1 = "/NyalakanPompa1";
+     const char* Perintah_On_2 = "/NyalakanPompa2";
+
+     const char* Perintah_Off_1 = "/MatikanPompa1";
+     const char* Perintah_Off_2 = "/MatikanPompa2";
+
+     const char* Tampilkan_nilai = "/TampilkanNilaiSensor";
+   
+void setup() {
+  Serial.begin(115200);
+  Serial.println("Memulai Program...");
+  
+   myBot.wifiConnect(ssid, pass);                     // Mengkoneksikan Ke WiFi
+   myBot.setTelegramToken(token);                   // Mengkonfigurasikan Token
+
+    if (myBot.testConnection())   
+        Serial.println("\nKoneksi Ke Telegram OK"); else Serial.println("\nTidak Terkoneksi Ke Telegram");
+  
+        // Pengaturan Fungsi Pin GPIOs Menjadi Output
+        pinMode(relayPin1, OUTPUT);     // Output Pompa1 Pin D1
+        pinMode(relayPin2, OUTPUT);         // Output Pompa2 Pin D2
+           
+        digitalWrite(relayPin1, HIGH);       // Matikan Relay 1 Saat Awal Menyala pertama kali
+        digitalWrite(relayPin2, HIGH);       // Matikan Relay 2 Saat Awal Menyala pertama kali
+  
+  Serial.println("Perintah Telegram Siap Di Fungsikan...");
+}
+
+void loop() {
+  sensorValue = analogRead(sensorPin); 
+
+  TBMessage msg;
+  if (myBot.getNewMessage(msg)) {                                         //Membaca Pesan Masuk...
+
+    if (msg.text.equalsIgnoreCase(Perintah_On_1)) {                       // Membaca Perintah Menyalakan Jika Ada
+        digitalWrite(relayPin1, LOW);                                      // Nyalakan int relayPin1
+        myBot.sendMessage(msg.sender.id, "Saat Ini Pompa1 Nyala");
+        }
+    else if (msg.text.equalsIgnoreCase(Perintah_Off_1)) {                 // Membaca Perintah Menyalakan Jika Ada
+        digitalWrite(relayPin1, HIGH);                                     // Matikan int relayPin1
+        myBot.sendMessage(msg.sender.id, "Saat Ini Pompa1 Mati");
+        }
+    else if (msg.text.equalsIgnoreCase(Perintah_On_2)) {                  // Membaca Perintah Menyalakan Jika Ada
+        digitalWrite(relayPin2, LOW);                                      // Nyalakan int relayPin2
+        myBot.sendMessage(msg.sender.id, "Saat Ini Pompa2 Nyala");
+        }
+    else if (msg.text.equalsIgnoreCase(Perintah_Off_2)) {                 // Membaca Perintah Menyalakan Jika Ada
+        digitalWrite(relayPin2, HIGH);                                     // Matikan int relayPin2
+        myBot.sendMessage(msg.sender.id, "Saat Ini Pompa2 Mati");
+        }
+    else if (msg.text.equalsIgnoreCase(Tampilkan_nilai)) {
+        myBot.sendMessage(msg.sender.id, "Kelembaban Tanah Saat ini adalah = " + String(sensorValue) );
+        }
+    else {
+        myBot.sendMessage(msg.sender.id, "Checking Pengulangan Program" );
+    }
+  }
+  
+  if (sensorValue<limit) {
+        digitalWrite(relayPin1, LOW);
+        digitalWrite(relayPin2, LOW); 
+        }
+    else {
+        digitalWrite(relayPin1, HIGH);
+        digitalWrite(relayPin2, HIGH); 
+        }
+        
+  delay(500); 
+}
