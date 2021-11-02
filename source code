@@ -13,13 +13,14 @@ int limit = 420;
   String token = "1337508958:AAGCSu0W7xDZLXDTh1RAZqmzQwJUvW3Hqj0";  // Isi Sesuai Token BOT
 
   // Untuk Setting Perintah Pada Telegram
-     const char* Perintah_On_1 = "/NyalakanPompa1";
-     const char* Perintah_On_2 = "/NyalakanPompa2";
+     const char* Perintah_On_1 = "/pompaON1";
+     const char* Perintah_On_2 = "/pompaON2";
+     const char* Status_pompa1 = "/status1";
+     const char* Status_pompa2 = "/status2";
+     const char* Perintah_Off_1 = "/pompaOFF1";
+     const char* Perintah_Off_2 = "/pompaOFF2";
 
-     const char* Perintah_Off_1 = "/MatikanPompa1";
-     const char* Perintah_Off_2 = "/MatikanPompa2";
-
-     const char* Tampilkan_nilai = "/TampilkanNilaiSensor";
+     const char* Tampilkan_nilai = "/nilaisensor";
    
 void setup() {
   Serial.begin(115200);
@@ -66,9 +67,34 @@ void loop() {
     else if (msg.text.equalsIgnoreCase(Tampilkan_nilai)) {
         myBot.sendMessage(msg.sender.id, "Kelembaban Tanah Saat ini adalah = " + String(sensorValue) );
         }
+    else if (msg.text.equalsIgnoreCase(Status_pompa1)) {
+        status1 = digitalRead(relayPin1);
+        if (status1 = 0 ) {
+            myBot.sendMessage(msg.sender.id, "Saat Ini Pompa1 Mati");
+            }
+        else {
+            myBot.sendMessage(msg.sender.id, "Saat Ini Pompa1 Hidup");
+            }
+    else if (msg.text.equalsIgnoreCase(Status_pompa2)) {
+        status2 = digitalRead(relayPin1);
+        if (status2 = 0 ) {
+            myBot.sendMessage(msg.sender.id, "Saat Ini Pompa1 Mati");
+            }
+        else {
+            myBot.sendMessage(msg.sender.id, "Saat Ini Pompa1 Hidup");
+            }
     else {
-        myBot.sendMessage(msg.sender.id, "Checking Pengulangan Program" );
-    }
+        myBot.sendMessage(msg.sender.id, (String)
+        "Selamat Datang di Kebun Telegram, untuk memulai gunakan perintah berikut :" +
+        "\n/pompaON1" +
+        "\n/pompaON2" +
+        "\n/pompaOFF1"
+        "\n/pompaOFF2" +
+        "\n/nilaisensor" +
+        "\n/status2" +
+        "\n/status1"
+        );
+        }
   }
   
   if (sensorValue<limit) {
