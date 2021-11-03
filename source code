@@ -7,8 +7,8 @@ int relayPin2 = D2;
 int sensorValue;
 int limit = 420;
 
-  String ssid  = "dopnetindo";                                   // Sesuaikan Dengan SSID
-  String pass  = "B3ngkulu2021";                                    // Ganti Password Sesuai Wifi
+  String ssid  = "Lintasarta";                                   // Sesuaikan Dengan SSID
+  String pass  = "N4sional";                                    // Ganti Password Sesuai Wifi
   String token = "1337508958:AAGCSu0W7xDZLXDTh1RAZqmzQwJUvW3Hqj0";  // Isi Sesuai Token BOT
 
   // Untuk Setting Perintah Pada Telegram
@@ -67,7 +67,7 @@ void loop() {
         myBot.sendMessage(msg.sender.id, "Kelembaban Tanah Saat ini adalah = " + String(sensorValue) );
         }
     else if (msg.text.equalsIgnoreCase(Status_pompa1)) {
-        if (digitalRead(relayPin1) == LOW ) {
+        if (digitalRead(relayPin1) == HIGH ) {
             myBot.sendMessage(msg.sender.id, "Saat Ini Pompa1 Dalam Kondisi Mati");
             }
         else {
@@ -75,7 +75,7 @@ void loop() {
             }
     }
     else if (msg.text.equalsIgnoreCase(Status_pompa2)) {
-        if (digitalRead(relayPin2) == LOW ) {
+        if (digitalRead(relayPin2) == HIGH ) {
             myBot.sendMessage(msg.sender.id, "Saat Ini Pompa2 Dalam Kondisi Mati");
             }
         else {
@@ -97,12 +97,12 @@ void loop() {
   }
   
   if (sensorValue<limit) {
-        digitalWrite(relayPin1, LOW);
-        digitalWrite(relayPin2, LOW);
-        }
-    else {
         digitalWrite(relayPin1, HIGH);
         digitalWrite(relayPin2, HIGH);
+        }
+    else {
+        digitalWrite(relayPin1, LOW);
+        digitalWrite(relayPin2, LOW);
         }
         
   delay(500); 
