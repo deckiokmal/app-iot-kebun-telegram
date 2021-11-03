@@ -5,11 +5,11 @@ int sensorPin = A0;
 int relayPin1 = D1;
 int relayPin2 = D2;
 int sensorValue;
-int limit = 420;
+int limit = 450;
 
-  String ssid  = "Lintasarta";                                   // Sesuaikan Dengan SSID
+  String ssid  = "BellyPrayoga";                                   // Sesuaikan Dengan SSID
   String pass  = "N4sional";                                    // Ganti Password Sesuai Wifi
-  String token = "1337508958:AAGCSu0W7xDZLXDTh1RAZqmzQwJUvW3Hqj0";  // Isi Sesuai Token BOT
+  String token = "2037757906:AAG0duLiaL5GPY_EE7HrvkKRnhefheibBvk";  // Isi Sesuai Token BOT
 
   // Untuk Setting Perintah Pada Telegram
      const char* Perintah_On_1 = "/pompaON1";
